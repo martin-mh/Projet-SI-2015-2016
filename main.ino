@@ -1,6 +1,4 @@
-/* Parameters start here */
-#define DEBUG_MODE 1
-/* Parameters end here */
+#include "parameters.h"
 
 #include "dht22.h"
 

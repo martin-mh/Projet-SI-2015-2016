@@ -1,7 +1,9 @@
-#include "DHT.h"
+#ifndef DHT22_H
+#define DHT22_H
 
-#define DHTPIN A0
-#define DHTTYPE DHT22
+#include "parameters.h"
+
+#include "DHT.h"
 
 class DhtManager
 {
@@ -21,3 +23,5 @@ private:
 
   bool errored;
 };
+
+#endif
