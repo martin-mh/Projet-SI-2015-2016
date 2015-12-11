@@ -1,11 +1,12 @@
 #include "dht22.h"
 
 DhtManager::DhtManager()
-  : dht(DHTPIN, DHTTYPE),
-    temperature(0),
-    humidity(0)
+  : dht(DHTPIN, DHTTYPE)
 {
   dht.begin();
+
+  temperature = new float(0);
+  humidity = new float(0);
 
 #if DEBUG_MODE
   Serial.println("DhtManager initialized");
@@ -14,10 +15,10 @@ DhtManager::DhtManager()
 
 void DhtManager::update()
 {
-  temperature = dht.readTemperature();
-  humidity = dht.readHumidity();
+  *temperature = dht.readTemperature();
+  *humidity = dht.readHumidity();
 
-  if(isnan(temperature) || isnan(humidity))
+  if(isnan(*temperature) || isnan(*humidity))
     errored = true;
   else
     errored = false;
@@ -28,12 +29,12 @@ bool DhtManager::isErrored()
   return errored;
 }
 
-float DhtManager::getTemperature()
+float * DhtManager::getTemperature()
 {
   return temperature;
 }
 
-float DhtManager::getHumidity()
+float * DhtManager::getHumidity()
 {
   return humidity;
 }

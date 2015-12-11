@@ -11,15 +11,15 @@ public:
   DhtManager();
 
   void update();
-  float getTemperature();
-  float getHumidity();
+  float * getTemperature();
+  float * getHumidity();
   bool isErrored();
   
 private:
   DHT dht;
 
-  float temperature;
-  float humidity;
+  float * temperature;
+  float * humidity;
 
   bool errored;
 };
