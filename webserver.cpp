@@ -54,7 +54,7 @@ void WebServer::loop()
 }
 
 void WebServer::init(byte * mac)
-{  
+{
   Ethernet.begin(mac);
   server = new EthernetServer(80);
 }

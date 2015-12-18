@@ -1,26 +1,21 @@
-#include <LiquidCrystal.h>
-
 #include "parameters.h"
 
 #include "debug.h"
 
 #include "dht22.h"
 #include "webserver.h"
-
-LiquidCrystal lcd(12,11,5,4,3,2);
-const int lcdCol = 16;
-const int lcdRow = 2;
+#include "lcdmanager.h"
 
 byte mac[] = { MAC };  
 
 DhtManager * dht;
 WebServer * ws;
+LcdManager * lcd;
 
 void setup() 
 {
-    lcd.begin(lcdCol, lcdRow);
-    lcd.blink();
-    lcd.print("Chargement...");
+  lcd = new LcdManager();
+  lcd->beginLoadingState();
     
     Serial.begin(9600);
     Serial.println();
@@ -33,10 +28,10 @@ void setup()
     ws->init(mac);
     Debug::println("WebServer inited");
 
-    lcd.clear();
-    lcd.noBlink();
-    lcd.setCursor(0, 0);
-    lcd.print(ws->getLocalIp());
+    lcd->setIp(ws->getLocalIp());
+    lcd->setAmbientDatas(dht->getHumidity(), dht->getTemperature());
+    lcd->beginHomeState();
+    
     ws->setDatas(dht->getHumidity(), dht->getTemperature());
 }
 
@@ -44,6 +39,7 @@ void loop()
 {
     dht->update();
     ws->loop();
+    lcd->loop();
     
     Serial.print("Humidity: "); 
     Serial.print(*dht->getHumidity());
@@ -51,12 +47,4 @@ void loop()
     Serial.print("Temperature: "); 
     Serial.print(*dht->getTemperature());
     Serial.println(" *C");
-
-    lcd.setCursor(0, 1);
-    lcd.print(*dht->getTemperature());
-    lcd.print(" *C ");
-    lcd.print(*dht->getHumidity());
-    lcd.print(" %     ");
-
-    //delay(1000);
 }
