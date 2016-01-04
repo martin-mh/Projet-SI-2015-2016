@@ -6,10 +6,13 @@
 #define DHTPIN A0
 #define DHTTYPE DHT22
 #define MAC 0x90, 0xA2, 0xDA, 0x10, 0x2F, 0x20
+
 #define UP_PIN 22
 #define LEFT_PIN 23
 #define DOWN_PIN 24
 #define RIGHT_PIN 25
+
+#define RESTART_PIN 8
 
 /* LCD Parameters */
 #define LCD_WIDTH 16
