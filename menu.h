@@ -6,7 +6,7 @@ class LcdManager;
 class Menu
 {
 public:
-  Menu(LcdManager*);
+  Menu(LcdManager*, char * name);
   virtual void setup() = 0;
   virtual void loop() = 0;
 
