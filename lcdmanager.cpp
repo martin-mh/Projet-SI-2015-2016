@@ -30,12 +30,12 @@ void LcdManager::registerMenu(Menu * menu)
 
 void LcdManager::setData(char * name, char * value)
 {
-  datas.insert(std::string(name), std::string(value));
+  datas[name] = value;
 }
 
-const char * LcdManager::data(char * name)
+char * LcdManager::data(char * name)
 {
-  return datas[name].c_str();
+  return datas[name];
 }
 
 int LcdManager::findMenu(char * name)
