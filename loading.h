@@ -1,9 +1,9 @@
 #ifndef LOADING_H
 #define LOADING_H
 
-#include "../parameters.h"
+#include "parameters.h"
 
-#include "../menu.h"
+#include "menu.h"
 
 class LcdManager;
 
@@ -14,6 +14,5 @@ public:
   virtual void setup();
   virtual void loop();
 };
-
 
 #endif

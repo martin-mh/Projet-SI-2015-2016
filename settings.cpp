@@ -1,5 +1,5 @@
 #include "settings.h"
-#include "../lcdmanager.h"
+#include "lcdmanager.h"
 
 void Settings::setup()
 {
@@ -42,7 +42,7 @@ void Settings::loop()
   }
 }
 
-Settings::Settings(LcdManager * lcd) : Menu(lcd), name("SETTINGS")
+Settings::Settings(LcdManager * lcd) : Menu(lcd, "SETTINGS")
 {
   lcd->registerMenu(this);
 }

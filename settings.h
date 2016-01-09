@@ -6,9 +6,9 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "../parameters.h"
+#include "parameters.h"
 
-#include "../menu.h"
+#include "menu.h"
 
 class LcdManager;
 

@@ -10,7 +10,7 @@ void Loading::setup()
 
 void Loading::loop(){}
 
-Loading::Loading(LcdManager * lcd) : Menu(lcd), name("LOADING")
+Loading::Loading(LcdManager * lcd) : Menu(lcd, "LOADING")
 {
 	lcd->registerMenu(this);
 }

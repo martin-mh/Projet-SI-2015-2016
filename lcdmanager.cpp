@@ -28,16 +28,6 @@ void LcdManager::registerMenu(Menu * menu)
   menu->id = menus.size() - 1;
 }
 
-void LcdManager::setData(char * name, char * value)
-{
-  datas[name] = value;
-}
-
-char * LcdManager::data(char * name)
-{
-  return datas[name];
-}
-
 int LcdManager::findMenu(char * name)
 {
   for(unsigned int i = 0; i < menus.size(); ++i)
@@ -49,15 +39,15 @@ int LcdManager::findMenu(char * name)
   }
 }
 
-LcdManager::LcdManager()
+LcdManager::LcdManager(Datas * datas) : LiquidCrystal(LCD_RS,
+                                        LCD_ENABLE,
+                                        LCD_D0,
+                                        LCD_D1,
+                                        LCD_D2,
+                                        LCD_D3),
+                                        datas(datas)
 {
-  lcd = new LiquidCrystal(LCD_RS,
-    LCD_ENABLE,
-    LCD_D0,
-    LCD_D1,
-    LCD_D2,
-    LCD_D3);
-  lcd->begin(LCD_WIDTH, LCD_HEIGHT);
+  begin(LCD_WIDTH, LCD_HEIGHT);
 
   /* Setup buttons */
   pinMode(UP_PIN, INPUT);

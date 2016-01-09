@@ -6,37 +6,33 @@
 
 #include <StandardCplusplus.h>
 #include <vector>
-#include <map>
 
+#include "datas.h"
 #include "menu.h"
 #include "parameters.h"
 
-#include "menus/loading.h"
-#include "menus/home.h"
-#include "menus/settings.h"
+#include "loading.h"
+#include "home.h"
+#include "settings.h"
 
-class LcdManager
+class LcdManager : public LiquidCrystal
 {
 public:
-  LcdManager();
+  LcdManager(Datas * data);
 
   void registerMenu(Menu * id);
-
-  void setData(char * name, char * value);
-  char * data(char * name);
 
   void setup();
   void loop();
 
   void changeMenu(int menuId);
   int findMenu(char * name);
+
+  Datas * datas;
   
 private:
   std::vector<Menu*> menus;
   int activeMenuId;
-  std::map<char*, char*> datas;
-
-  LiquidCrystal * lcd;
 };
 
 #endif

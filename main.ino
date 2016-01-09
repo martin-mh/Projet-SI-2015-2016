@@ -6,16 +6,20 @@
 #include "dht22.h"
 #include "webserver.h"
 #include "lcdmanager.h"
+#include "datas.h"
 
 byte mac[] = { MAC };  
 
 DhtManager * dht;
 WebServer * ws;
 LcdManager * lcd;
+Datas * datas;
 
 void setup() 
 {
-  lcd = new LcdManager();
+  datas = new Datas();
+
+  lcd = new LcdManager(datas);
   lcd->setup();
     
   Serial.begin(9600);
@@ -28,10 +32,10 @@ void setup()
   ws->init(mac);
   Debug::println("WebServer inited");
 
-  lcd->setData("IP", ws->getLocalIp());
-  lcd->setData("HUMIDITY", *dht->getHumidity());
-  lcd->setData("TEMPERATURE", *dht->getTemperature());
-    
+  datas->localIp = ws->getLocalIp();
+  datas->humidity = dht->getHumidity();
+  datas->temperature = dht->getTemperature();
+
   lcd->changeMenu(0);
 
   ws->setDatas(dht->getHumidity(), dht->getTemperature());
@@ -40,9 +44,6 @@ void setup()
 void loop() 
 {
   dht->update();
-  
-  lcd->setData("HUMIDITY", *dht->getHumidity());
-  lcd->setData("TEMPERATURE", *dht->getTemperature());
 
   ws->loop();
   lcd->loop();

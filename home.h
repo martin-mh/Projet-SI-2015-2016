@@ -1,9 +1,9 @@
 #ifndef HOME_H
 #define HOME_H
 
-#include "../parameters.h"
+#include "parameters.h"
 
-#include "../menu.h"
+#include "menu.h"
 
 class LcdManager;
 
