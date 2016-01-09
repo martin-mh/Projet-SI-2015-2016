@@ -1,3 +1,4 @@
+#include <StandardCplusplus.h>
 #include "parameters.h"
 
 #include "debug.h"
@@ -15,10 +16,9 @@ LcdManager * lcd;
 void setup() 
 {
   lcd = new LcdManager();
-  lcd->beginLoadingState();
+  lcd->setup();
     
   Serial.begin(9600);
-  Serial.println();
   Debug::setup(&Serial);
 
   dht = new DhtManager();
@@ -28,10 +28,12 @@ void setup()
   ws->init(mac);
   Debug::println("WebServer inited");
 
-  lcd->setIp(ws->getLocalIp());
-  lcd->setAmbientDatas(dht->getHumidity(), dht->getTemperature());
-  lcd->beginHomeState();
+  lcd->setData("IP", ws->getLocalIp());
+  lcd->setData("HUMIDITY", *dht->getHumidity());
+  lcd->setData("TEMPERATURE", *dht->getTemperature());
     
+  lcd->changeMenu(0);
+
   ws->setDatas(dht->getHumidity(), dht->getTemperature());
 }
 
@@ -39,6 +41,9 @@ void loop()
 {
   dht->update();
   
+  lcd->setData("HUMIDITY", *dht->getHumidity());
+  lcd->setData("TEMPERATURE", *dht->getTemperature());
+
   ws->loop();
   lcd->loop();
     

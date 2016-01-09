@@ -1,111 +1,52 @@
 #include "lcdmanager.h"
 
-/* LOOPS */
+/* NEW */
+
+void LcdManager::setup()
+{
+  menus.push_back(new Loading(this));
+  menus.push_back(new Home(this));
+  menus.push_back(new Settings(this));
+
+  activeMenuId = 0;
+}
 
 void LcdManager::loop()
 {
-  if(state == "HOME")
-    loopHomeState();
-  else if(state == "SETTINGS")
-    loopSettingsState();
-  return;
+  menus[activeMenuId]->loop();
 }
 
-void LcdManager::loopHomeState()
+void LcdManager::changeMenu(int menuId)
 {
-  if(digitalRead(right) == LOW)
+  activeMenuId = menuId;
+  menus[menuId]->setup();
+}
+
+void LcdManager::registerMenu(Menu * menu)
+{
+  menus.push_back(menu);
+  menu->id = menus.size() - 1;
+}
+
+void LcdManager::setData(char * name, char * value)
+{
+  datas.insert(std::string(name), std::string(value));
+}
+
+const char * LcdManager::data(char * name)
+{
+  return datas[name].c_str();
+}
+
+int LcdManager::findMenu(char * name)
+{
+  for(unsigned int i = 0; i < menus.size(); ++i)
   {
-    lcd->setCursor(0, 1);
-    lcd->print(*temperature);
-    lcd->print(" *C ");
-    lcd->print(*humidity);
-    lcd->print("%");
-  } else {
-    beginSettingsState();
+    if(menus[i]->name == name)
+    {
+      return menus[i]->id;
+    }
   }
-}
-
-void LcdManager::loopSettingsState()
-{
-  if(digitalRead(left) == HIGH)
-  {
-    beginHomeState();
-    return;
-  }
-
-  if(digitalRead(down) == HIGH)
-  {
-    if(menu == 1)
-      return;
-
-    lcd->setCursor(10, 1);
-    menu = 1;
-  }
-  else if(digitalRead(up) == HIGH)
-  {
-    if(menu == 0)
-      return;
-
-    lcd->setCursor(11, 0);
-    menu = 0;
-  }
-  else if(digitalRead(right) == HIGH)
-  {
-    if(menu == 1)
-      restart();
-    return;
-  }
-}
-
-/* STATES */
-
-void LcdManager::beginLoadingState()
-{
-  lcd->clear();
-  lcd->blink();
-  lcd->print("Chargement...");
-
-  state = "LOADING";
-}
-
-void LcdManager::beginHomeState()
-{
-  lcd->noBlink();
-  lcd->home();
-  lcd->noBlink();
-  lcd->print(ip);
-
-  state = "HOME";  
-}
-
-void LcdManager::beginSettingsState()
-{
-  lcd->clear();
-  lcd->print("Temperature");
-  lcd->setCursor(0, 1);
-  lcd->print("Redemarrer");
-  lcd->setCursor(11, 0);
-  lcd->blink();
-  menu = 0;
-  state = "SETTINGS";
-}
-
-/* DATAS */
-
-void LcdManager::setIp(IPAddress ip)
-{
-  this->ip = ip;  
-}
-
-void LcdManager::setAmbientDatas(float * humidity, float * temperature)
-{
-  this->humidity = humidity;
-  this->temperature = temperature;
-}
-
-void inline LcdManager::restart()
-{
-  digitalWrite(restart_pin, HIGH);
 }
 
 LcdManager::LcdManager()
@@ -116,15 +57,11 @@ LcdManager::LcdManager()
     LCD_D1,
     LCD_D2,
     LCD_D3);
-    lcd->begin(LCD_WIDTH, LCD_HEIGHT);
+  lcd->begin(LCD_WIDTH, LCD_HEIGHT);
 
-    state = "EMPTY";
-
-    pinMode(up, INPUT);
-    pinMode(left, INPUT);
-    pinMode(down, INPUT);
-    pinMode(right, INPUT);
-    pinMode(restart_pin, OUTPUT);
-    digitalWrite(restart_pin, LOW);
+  /* Setup buttons */
+  pinMode(UP_PIN, INPUT);
+  pinMode(LEFT_PIN, INPUT);
+  pinMode(DOWN_PIN, INPUT);
+  pinMode(RIGHT_PIN, INPUT);
 }
-

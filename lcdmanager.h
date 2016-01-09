@@ -1,45 +1,45 @@
 #ifndef LCDMANAGER_H
 #define LCDMANAGER_H
-
+#include <StandardCplusplus.h>
 #include <LiquidCrystal.h>
 #include <Ethernet.h>
+
+#include <serstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <iterator>
+#include <new.cpp>
+
+#include "menu.h"
 #include "parameters.h"
+
+#include "menus/loading.h"
+#include "menus/home.h"
+#include "menus/settings.h"
 
 class LcdManager
 {
 public:
   LcdManager();
 
+  void registerMenu(Menu * id);
+
+  void setData(char * name, char * value);
+  const char * data(char * name);
+
+  void setup();
   void loop();
 
-  void beginLoadingState();
-  void beginHomeState();
-  void beginSettingsState();
-
-  void setIp(IPAddress ip);
-  void setAmbientDatas(float * humidity, float * temperature);
-
+  void changeMenu(int menuId);
+  int findMenu(char * name);
+  
 private:
-  void loopHomeState();
-  void loopSettingsState();
-
-  void inline restart(); // Emit a signal in order to restart the Arduino Board
+  std::vector<Menu*> menus;
+  int activeMenuId;
+  std::map<std::string, std::string> datas;
 
   LiquidCrystal * lcd;
-  IPAddress ip;
-  float * temperature;
-  float * humidity;
-
-  /* Button's pins */
-  const int up = UP_PIN;
-  const int left = LEFT_PIN;
-  const int down = DOWN_PIN;
-  const int right = RIGHT_PIN;
-  const int restart_pin = RESTART_PIN;
-
-  /* Actual state representing the content of the LCD */
-  String state; // keywords : EMPTY or LOADING or HOME or SETTINGS
-  short menu; // Represent the actual menu choice
 };
 
 #endif
