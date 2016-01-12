@@ -1,0 +1,14 @@
+.information-block
+{
+	font-size: 20px;
+}
+
+.success
+{
+	color: #27ae60;
+}
+
+.failure
+{
+	color: #c0392b;
+}
