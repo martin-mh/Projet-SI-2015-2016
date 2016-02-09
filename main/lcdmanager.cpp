@@ -14,6 +14,7 @@ void LcdManager::setup()
 void LcdManager::loop()
 {
   menus[activeMenuId]->loop();
+  Serial.println(activeMenuId);
 }
 
 void LcdManager::changeMenu(int menuId)

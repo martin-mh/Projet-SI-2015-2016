@@ -29,14 +29,14 @@ void setup()
     
   ws = new WebServer();
   Debug::println("WebServer created");
-  ws->init(mac);
+  //ws->init(mac);
   Debug::println("WebServer inited");
 
-  datas->localIp = ws->getLocalIp();
+  datas->localIp = IPAddress();
   datas->humidity = dht->getHumidity();
   datas->temperature = dht->getTemperature();
 
-  lcd->changeMenu(0);
+  lcd->changeMenu(1);
 
   ws->setDatas(dht->getHumidity(), dht->getTemperature());
 }
